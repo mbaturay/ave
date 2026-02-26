@@ -1,0 +1,255 @@
+export type Category = 'jacket' | 'base_layer' | 'pants' | 'gloves' | 'beanie' | 'goggles' | 'boots' | 'socks';
+export type StyleTag = 'sporty' | 'classic' | 'premium' | 'all';
+
+export interface CatalogItem {
+  id: string;
+  name: string;
+  brand: string;
+  category: Category;
+  price: number;
+  originalPrice: number;
+  rating: number;
+  ratingCount: number;
+  image: string;
+  tags: string[];
+  style: StyleTag;
+}
+
+export const catalog: CatalogItem[] = [
+  // ── Jackets ───────────────────────────────────────────────────────────────
+  {
+    id: 'j-sporty',
+    name: 'ThermoFlex Pro Ski Jacket',
+    brand: 'AlpineRun',
+    category: 'jacket',
+    price: 169,
+    originalPrice: 199,
+    rating: 4.7,
+    ratingCount: 312,
+    image: 'https://images.unsplash.com/photo-1674350285486-a62fcdc2fa61?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600',
+    tags: ['waterproof', 'insulation', 'warm', 'lightweight'],
+    style: 'sporty',
+  },
+  {
+    id: 'j-classic',
+    name: 'Alpine Classic Shell Jacket',
+    brand: 'NordLayer',
+    category: 'jacket',
+    price: 149,
+    originalPrice: 179,
+    rating: 4.5,
+    ratingCount: 218,
+    image: 'https://images.unsplash.com/photo-1764602655362-a07ae9cf0f2b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600',
+    tags: ['waterproof', 'wind-resistant', 'warm', 'durable'],
+    style: 'classic',
+  },
+  {
+    id: 'j-premium',
+    name: 'Summit Elite Down Jacket',
+    brand: 'PeakForm',
+    category: 'jacket',
+    price: 189,
+    originalPrice: 229,
+    rating: 4.9,
+    ratingCount: 145,
+    image: 'https://images.unsplash.com/photo-1674350285486-a62fcdc2fa61?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600',
+    tags: ['waterproof', 'down-fill', 'insulation', 'warm', 'premium'],
+    style: 'premium',
+  },
+
+  // ── Base Layers ───────────────────────────────────────────────────────────
+  {
+    id: 'bl-sporty',
+    name: 'CoreHeat Base Layer Top',
+    brand: 'AlpineRun',
+    category: 'base_layer',
+    price: 38,
+    originalPrice: 48,
+    rating: 4.6,
+    ratingCount: 489,
+    image: 'https://images.unsplash.com/photo-1565962684631-716a905dd295?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600',
+    tags: ['moisture-wicking', 'warm', 'layering', 'stretch'],
+    style: 'sporty',
+  },
+  {
+    id: 'bl-classic',
+    name: 'MerinoPlus Thermal Crew',
+    brand: 'WoolCraft',
+    category: 'base_layer',
+    price: 52,
+    originalPrice: 65,
+    rating: 4.8,
+    ratingCount: 276,
+    image: 'https://images.unsplash.com/photo-1698328722821-0500626c27d8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600',
+    tags: ['merino-wool', 'warm', 'layering', 'natural'],
+    style: 'classic',
+  },
+  {
+    id: 'bl-premium',
+    name: 'ThermoCore Elite Base',
+    brand: 'PeakForm',
+    category: 'base_layer',
+    price: 68,
+    originalPrice: 85,
+    rating: 4.9,
+    ratingCount: 92,
+    image: 'https://images.unsplash.com/photo-1565962684631-716a905dd295?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600',
+    tags: ['merino-wool', 'moisture-wicking', 'warm', 'layering', 'premium'],
+    style: 'premium',
+  },
+
+  // ── Pants ─────────────────────────────────────────────────────────────────
+  {
+    id: 'p-sporty',
+    name: 'PowderRider Ski Pants',
+    brand: 'AlpineRun',
+    category: 'pants',
+    price: 109,
+    originalPrice: 139,
+    rating: 4.6,
+    ratingCount: 341,
+    image: 'https://images.unsplash.com/photo-1768777156505-296818362138?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600',
+    tags: ['waterproof', 'warm', 'durable', 'vented'],
+    style: 'sporty',
+  },
+  {
+    id: 'p-classic',
+    name: 'Alpine Classic Ski Bibs',
+    brand: 'NordLayer',
+    category: 'pants',
+    price: 135,
+    originalPrice: 165,
+    rating: 4.7,
+    ratingCount: 197,
+    image: 'https://images.unsplash.com/photo-1768777156505-296818362138?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600',
+    tags: ['waterproof', 'wind-resistant', 'warm', 'durable', 'bib'],
+    style: 'classic',
+  },
+  {
+    id: 'p-premium',
+    name: 'Summit Pro Race Pants',
+    brand: 'PeakForm',
+    category: 'pants',
+    price: 149,
+    originalPrice: 185,
+    rating: 4.8,
+    ratingCount: 88,
+    image: 'https://images.unsplash.com/photo-1768777156505-296818362138?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600',
+    tags: ['waterproof', 'insulation', 'warm', 'lightweight', 'premium'],
+    style: 'premium',
+  },
+
+  // ── Gloves ────────────────────────────────────────────────────────────────
+  {
+    id: 'g-all',
+    name: 'Peak Grip Ski Gloves',
+    brand: 'AlpineRun',
+    category: 'gloves',
+    price: 44,
+    originalPrice: 55,
+    rating: 4.5,
+    ratingCount: 523,
+    image: 'https://images.unsplash.com/photo-1739395670857-c9ac7e0b39b8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600',
+    tags: ['waterproof', 'warm', 'grip', 'touchscreen'],
+    style: 'all',
+  },
+  {
+    id: 'g-premium',
+    name: 'Summit Pro Mittens',
+    brand: 'PeakForm',
+    category: 'gloves',
+    price: 62,
+    originalPrice: 79,
+    rating: 4.8,
+    ratingCount: 154,
+    image: 'https://images.unsplash.com/photo-1739395670857-c9ac7e0b39b8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600',
+    tags: ['waterproof', 'insulation', 'warm', 'down-fill', 'premium'],
+    style: 'premium',
+  },
+
+  // ── Beanies ───────────────────────────────────────────────────────────────
+  {
+    id: 'b-classic',
+    name: 'TrailHead Merino Beanie',
+    brand: 'WoolCraft',
+    category: 'beanie',
+    price: 26,
+    originalPrice: 32,
+    rating: 4.9,
+    ratingCount: 687,
+    image: 'https://images.unsplash.com/photo-1625540438967-fe892ad47ed0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600',
+    tags: ['merino-wool', 'warm', 'layering', 'helmet-compatible'],
+    style: 'classic',
+  },
+  {
+    id: 'b-sporty',
+    name: 'StretchFit Sport Beanie',
+    brand: 'AlpineRun',
+    category: 'beanie',
+    price: 19,
+    originalPrice: 25,
+    rating: 4.4,
+    ratingCount: 389,
+    image: 'https://images.unsplash.com/photo-1625540438967-fe892ad47ed0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600',
+    tags: ['warm', 'stretch', 'layering', 'reflective', 'helmet-compatible'],
+    style: 'sporty',
+  },
+
+  // ── Goggles ───────────────────────────────────────────────────────────────
+  {
+    id: 'og-sporty',
+    name: 'ClearVision OTG Goggles',
+    brand: 'AlpineRun',
+    category: 'goggles',
+    price: 58,
+    originalPrice: 75,
+    rating: 4.6,
+    ratingCount: 241,
+    image: 'https://images.unsplash.com/photo-1644270769241-29c182863c68?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600',
+    tags: ['UV-protection', 'anti-fog', 'OTG', 'wide-view'],
+    style: 'sporty',
+  },
+  {
+    id: 'og-premium',
+    name: 'ProLens Mag Goggles',
+    brand: 'PeakForm',
+    category: 'goggles',
+    price: 85,
+    originalPrice: 109,
+    rating: 4.9,
+    ratingCount: 113,
+    image: 'https://images.unsplash.com/photo-1644270769241-29c182863c68?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600',
+    tags: ['UV-protection', 'anti-fog', 'magnetic-lens', 'premium', 'wide-view'],
+    style: 'premium',
+  },
+
+  // ── Boots ─────────────────────────────────────────────────────────────────
+  {
+    id: 'bt-classic',
+    name: 'AllTerrain Winter Boots',
+    brand: 'NordLayer',
+    category: 'boots',
+    price: 149,
+    originalPrice: 185,
+    rating: 4.6,
+    ratingCount: 302,
+    image: 'https://images.unsplash.com/photo-1642690167184-eb64f4ef469f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600',
+    tags: ['waterproof', 'insulation', 'warm', 'grip', 'durable'],
+    style: 'classic',
+  },
+
+  // ── Socks ─────────────────────────────────────────────────────────────────
+  {
+    id: 'sk-all',
+    name: 'MerinoSki Performance Socks',
+    brand: 'WoolCraft',
+    category: 'socks',
+    price: 19,
+    originalPrice: 24,
+    rating: 4.7,
+    ratingCount: 814,
+    image: 'https://images.unsplash.com/photo-1642853474532-9aca78f70629?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600',
+    tags: ['merino-wool', 'warm', 'cushioned', 'moisture-wicking'],
+    style: 'all',
+  },
+];
