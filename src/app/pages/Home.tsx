@@ -1,4 +1,5 @@
 import { Link } from 'react-router';
+import { motion } from 'motion/react';
 import { ArrowRight, Sparkles, ShieldCheck, RefreshCw } from 'lucide-react';
 import { Button } from '../components/ui/button';
 
@@ -35,10 +36,15 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/70" />
 
         <div className="relative z-10 max-w-3xl mx-auto px-8 text-center flex flex-col items-center gap-8">
-          <div className="flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/30 bg-white/10 backdrop-blur-sm text-sm">
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3, ease: 'easeOut' }}
+            className="flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/30 bg-white/10 backdrop-blur-sm text-sm"
+          >
             <Sparkles className="size-3.5" />
             <span>Powered by AI</span>
-          </div>
+          </motion.div>
 
           <h1 className="text-5xl leading-tight tracking-tight text-white" style={{ fontWeight: 600 }}>
             Shop smarter with your<br />personal AI stylist
@@ -79,7 +85,19 @@ export default function Home() {
 
           <div className="grid grid-cols-3 gap-8">
             {FEATURES.map(({ icon: Icon, title, description }) => (
-              <div key={title} className="flex flex-col items-start gap-4 p-8 rounded-2xl border border-border bg-card">
+              <motion.div
+                key={title}
+                className="flex flex-col items-start gap-4 p-8 rounded-2xl border border-border bg-card"
+                whileHover={{
+                  y: -4,
+                  boxShadow: '0 12px 24px rgba(0, 0, 0, 0.06)',
+                }}
+                transition={{
+                  type: 'spring',
+                  stiffness: 400,
+                  damping: 25,
+                }}
+              >
                 <div className="p-2.5 rounded-xl bg-muted">
                   <Icon className="size-5 text-foreground" />
                 </div>
@@ -87,7 +105,7 @@ export default function Home() {
                   <h3 className="text-foreground mb-1">{title}</h3>
                   <p className="text-muted-foreground text-sm leading-relaxed">{description}</p>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>

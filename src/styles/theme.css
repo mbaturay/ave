@@ -39,6 +39,17 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  /* Glass treatment tokens */
+  --glass-bg: linear-gradient(
+    135deg,
+    rgba(255, 240, 235, 0.35),
+    rgba(255, 255, 255, 0.25),
+    rgba(245, 235, 255, 0.35)
+  );
+  --glass-border: rgba(255, 255, 255, 0.3);
+  --glass-inset-highlight: 0 1px 0 rgba(255, 255, 255, 0.5);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
 }
 
 .dark {
@@ -76,6 +87,17 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(0.269 0 0);
   --sidebar-ring: oklch(0.439 0 0);
+
+  /* Glass treatment tokens (dark) */
+  --glass-bg: linear-gradient(
+    135deg,
+    rgba(40, 30, 50, 0.5),
+    rgba(30, 30, 40, 0.4),
+    rgba(50, 35, 55, 0.5)
+  );
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-inset-highlight: 0 1px 0 rgba(255, 255, 255, 0.08);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
 }
 
 @theme inline {
@@ -177,5 +199,23 @@
     font-size: var(--text-base);
     font-weight: var(--font-weight-normal);
     line-height: 1.5;
+  }
+}
+
+@layer utilities {
+  .glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-inset-highlight) inset, var(--glass-shadow);
+  }
+
+  .glass-subtle {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px) saturate(150%);
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-inset-highlight) inset, 0 4px 16px rgba(0, 0, 0, 0.05);
   }
 }

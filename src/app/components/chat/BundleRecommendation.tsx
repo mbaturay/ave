@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { Star, RefreshCw, X, ShoppingBag, Check, ArrowRight, Tag } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
@@ -49,6 +50,21 @@ const CATEGORY_LABELS: Record<string, string> = {
   goggles: 'Goggles',
   boots: 'Boots',
   socks: 'Socks',
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 24, scale: 0.97 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      type: 'spring' as const,
+      stiffness: 400,
+      damping: 28,
+      mass: 0.8,
+    },
+  },
 };
 
 export function BundleRecommendation({
@@ -110,109 +126,124 @@ export function BundleRecommendation({
   return (
     <div className="w-full">
       {/* ── Product grid ── */}
-      <div className="grid grid-cols-2 gap-5 lg:grid-cols-3">
-        {bundle.items.map((item) => {
-          const imageSrc = getProductImageSrc(item.catalogItem);
-          const { displayName } = parseProductName(item.catalogItem.name);
-          return (
-          <div
-            key={item.catalogItem.id}
-            className={`group flex flex-col rounded-2xl border border-border bg-card overflow-hidden transition-opacity duration-300 ${
-              replacingId === item.catalogItem.id ? 'opacity-30' : 'opacity-100'
-            }`}
-          >
-            {/* Product image */}
-            <div
-              className="relative aspect-square overflow-hidden bg-muted cursor-pointer"
-              onClick={() => onProductClick?.(item)}
+      <motion.div
+        className="grid grid-cols-2 gap-5 lg:grid-cols-3"
+        initial="hidden"
+        animate="visible"
+        variants={{
+          hidden: {},
+          visible: { transition: { staggerChildren: 0.08 } },
+        }}
+      >
+        <AnimatePresence mode="popLayout">
+          {bundle.items.map((item) => {
+            const imageSrc = getProductImageSrc(item.catalogItem);
+            const { displayName } = parseProductName(item.catalogItem.name);
+            return (
+            <motion.div
+              key={item.catalogItem.id}
+              layout
+              variants={cardVariants}
+              exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
+              whileHover={{ scale: 1.02 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              className={`group flex flex-col rounded-2xl border border-border bg-card overflow-hidden hover:shadow-lg hover:shadow-black/5 ${
+                replacingId === item.catalogItem.id ? 'opacity-30' : 'opacity-100'
+              }`}
             >
-              {imageSrc ? (
-                <ImageWithFallback
-                  src={imageSrc}
-                  alt={displayName}
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center">
-                  <ProductIcon
-                    category={item.catalogItem.category}
-                    name={item.catalogItem.name}
-                    tier={getProductTier(item.catalogItem)}
-                    size={64}
-                  />
-                </div>
-              )}
-              {/* Category tag */}
-              <span className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-foreground text-xs px-2 py-1 rounded-md" style={{ fontWeight: 500 }}>
-                {CATEGORY_LABELS[item.catalogItem.category]}
-              </span>
-              {/* Updated micro-badge */}
-              {showUpdateBadge && (
-                <span className="absolute top-3 right-3 text-[10px] bg-emerald-50 text-emerald-600 border border-emerald-200 px-1.5 py-0.5 rounded-full leading-none" style={{ fontWeight: 500 }}>
-                  Updated
-                </span>
-              )}
-            </div>
-
-            {/* Product info */}
-            <div className="flex flex-col gap-2 p-4 flex-1">
+              {/* Product image */}
               <div
-                className="cursor-pointer"
+                className="relative aspect-square overflow-hidden bg-muted cursor-pointer"
                 onClick={() => onProductClick?.(item)}
               >
-                <p className="text-xs text-muted-foreground uppercase tracking-wide mb-0.5">
-                  {item.catalogItem.brand}
-                </p>
-                <p className="leading-snug" style={{ fontWeight: 500 }}>
-                  {displayName}
-                </p>
+                {imageSrc ? (
+                  <ImageWithFallback
+                    src={imageSrc}
+                    alt={displayName}
+                    className="w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-105"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center transition-transform duration-300 ease-out group-hover:scale-105">
+                    <ProductIcon
+                      category={item.catalogItem.category}
+                      name={item.catalogItem.name}
+                      tier={getProductTier(item.catalogItem)}
+                      size={64}
+                    />
+                  </div>
+                )}
+                {/* Category tag */}
+                <span className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-foreground text-xs px-2 py-1 rounded-md" style={{ fontWeight: 500 }}>
+                  {CATEGORY_LABELS[item.catalogItem.category]}
+                </span>
+                {/* Updated micro-badge */}
+                {showUpdateBadge && (
+                  <span className="absolute top-3 right-3 text-[10px] bg-emerald-50 text-emerald-600 border border-emerald-200 px-1.5 py-0.5 rounded-full leading-none" style={{ fontWeight: 500 }}>
+                    Updated
+                  </span>
+                )}
               </div>
 
-              {/* Price + rating row */}
-              <div className="flex items-center justify-between">
-                <div className="flex items-baseline gap-1.5">
-                  <span className="text-lg" style={{ fontWeight: 700 }}>
-                    ${item.catalogItem.price}
-                  </span>
-                  <span className="text-xs text-muted-foreground line-through">
-                    ${item.catalogItem.originalPrice}
-                  </span>
+              {/* Product info */}
+              <div className="flex flex-col gap-2 p-4 flex-1">
+                <div
+                  className="cursor-pointer"
+                  onClick={() => onProductClick?.(item)}
+                >
+                  <p className="text-xs text-muted-foreground uppercase tracking-wide mb-0.5">
+                    {item.catalogItem.brand}
+                  </p>
+                  <p className="leading-snug" style={{ fontWeight: 500 }}>
+                    {displayName}
+                  </p>
                 </div>
-                <StarRating rating={item.catalogItem.rating} count={item.catalogItem.ratingCount} />
-              </div>
 
-              {/* AI rationale */}
-              <p className="text-xs text-muted-foreground italic leading-relaxed flex-1 border-l-2 border-muted pl-2">
-                {item.rationale}
-              </p>
+                {/* Price + rating row */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-baseline gap-1.5">
+                    <span className="text-lg" style={{ fontWeight: 700 }}>
+                      ${item.catalogItem.price}
+                    </span>
+                    <span className="text-xs text-muted-foreground line-through">
+                      ${item.catalogItem.originalPrice}
+                    </span>
+                  </div>
+                  <StarRating rating={item.catalogItem.rating} count={item.catalogItem.ratingCount} />
+                </div>
 
-              {/* Item actions */}
-              <div className="flex gap-3 pt-2 border-t border-border">
-                <button
-                  onClick={() => handleReplace(item.catalogItem.id)}
-                  disabled={!canReplace(item) || !!replacingId || cartAdded}
-                  className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground disabled:opacity-25 disabled:cursor-not-allowed transition-colors"
-                >
-                  <RefreshCw className="size-3" />
-                  Swap
-                </button>
-                <button
-                  onClick={() => handleRemove(item.catalogItem.id)}
-                  disabled={bundle.items.length <= 1 || !!replacingId || cartAdded}
-                  className="flex items-center gap-1 text-xs text-muted-foreground hover:text-destructive disabled:opacity-25 disabled:cursor-not-allowed transition-colors"
-                >
-                  <X className="size-3" />
-                  Remove
-                </button>
+                {/* AI rationale */}
+                <p className="text-xs text-muted-foreground italic leading-relaxed flex-1 border-l-2 border-muted pl-2">
+                  {item.rationale}
+                </p>
+
+                {/* Item actions */}
+                <div className="flex gap-3 pt-2 border-t border-border">
+                  <button
+                    onClick={() => handleReplace(item.catalogItem.id)}
+                    disabled={!canReplace(item) || !!replacingId || cartAdded}
+                    className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground disabled:opacity-25 disabled:cursor-not-allowed transition-colors"
+                  >
+                    <RefreshCw className="size-3" />
+                    Swap
+                  </button>
+                  <button
+                    onClick={() => handleRemove(item.catalogItem.id)}
+                    disabled={bundle.items.length <= 1 || !!replacingId || cartAdded}
+                    className="flex items-center gap-1 text-xs text-muted-foreground hover:text-destructive disabled:opacity-25 disabled:cursor-not-allowed transition-colors"
+                  >
+                    <X className="size-3" />
+                    Remove
+                  </button>
+                </div>
               </div>
-            </div>
-          </div>
-          );
-        })}
-      </div>
+            </motion.div>
+            );
+          })}
+        </AnimatePresence>
+      </motion.div>
 
       {/* ── Cart summary ── */}
-      <div className="mt-8 rounded-2xl border border-border bg-card p-6">
+      <div className="mt-8 rounded-2xl glass-subtle p-6">
         <div className="flex flex-wrap items-center justify-between gap-4 mb-5">
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Tag className="size-4" />
@@ -246,14 +277,19 @@ export function BundleRecommendation({
                 </div>
               ))}
             </div>
-            <Button
-              size="lg"
-              className="w-full gap-2 h-12"
-              onClick={() => onAddToCart(bundle.items, bundle.totalPrice, bundle.savings)}
+            <motion.div
+              animate={{ scale: [1, 1.015, 1] }}
+              transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
             >
-              <ShoppingBag className="size-4" />
-              Add full bundle to cart — ${bundle.totalPrice}
-            </Button>
+              <Button
+                size="lg"
+                className="w-full gap-2 h-12"
+                onClick={() => onAddToCart(bundle.items, bundle.totalPrice, bundle.savings)}
+              >
+                <ShoppingBag className="size-4" />
+                Add full bundle to cart — ${bundle.totalPrice}
+              </Button>
+            </motion.div>
           </>
         ) : (
           <div className="flex flex-col gap-3">

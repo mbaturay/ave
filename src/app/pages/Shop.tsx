@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import { RotateCcw, ChevronDown } from 'lucide-react';
 import { Badge } from '../components/ui/badge';
 import { Slider } from '../components/ui/slider';
@@ -41,11 +41,36 @@ function BuildingScreen({ intentData }: { intentData: IntentData }) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3 }}
-        className="flex flex-col items-center gap-5 text-center"
+        className="flex flex-col items-center gap-6 text-center"
       >
-        <div className="size-10 rounded-full border-2 border-border border-t-foreground animate-spin" />
+        {/* Pulsing dots */}
+        <div className="flex items-center gap-2">
+          {[0, 1, 2].map((i) => (
+            <motion.div
+              key={i}
+              className="size-3 rounded-full bg-foreground"
+              animate={{
+                scale: [1, 1.4, 1],
+                opacity: [0.4, 1, 0.4],
+              }}
+              transition={{
+                duration: 1.2,
+                repeat: Infinity,
+                ease: 'easeInOut',
+                delay: i * 0.15,
+              }}
+            />
+          ))}
+        </div>
+
         <div>
-          <p style={{ fontWeight: 500 }}>Building your bundle</p>
+          <motion.p
+            style={{ fontWeight: 500 }}
+            animate={{ opacity: [0.7, 1, 0.7] }}
+            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            Building your bundle
+          </motion.p>
           <p className="text-sm text-muted-foreground mt-1 max-w-xs">
             Finding the best {intentData.skillLevel.toLowerCase()} picks for{' '}
             <span className="text-foreground">{intentData.activity} in {intentData.location}</span>
@@ -65,7 +90,7 @@ function WhyThisWorksCard({ summary }: { summary: string }) {
 
   return (
     <div
-      className="mb-5 px-4 py-3 rounded-xl border border-border bg-card cursor-pointer select-none"
+      className="mb-5 px-4 py-3 rounded-xl glass-subtle cursor-pointer select-none"
       onClick={() => setExpanded((e) => !e)}
     >
       <div className="flex items-start justify-between gap-3">
@@ -96,6 +121,20 @@ function WhyThisWorksCard({ summary }: { summary: string }) {
     </div>
   );
 }
+
+// ── Shared stagger variants for results sections ─────────────────────────────
+const sectionVariants = {
+  hidden: { opacity: 0, y: 16 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: 'spring' as const,
+      stiffness: 400,
+      damping: 30,
+    },
+  },
+};
 
 // ── Results page ──────────────────────────────────────────────────────────────
 function ResultsPage({
@@ -190,14 +229,17 @@ function ResultsPage({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.35, ease: 'easeOut' }}
+      initial="hidden"
+      animate="visible"
+      variants={{
+        hidden: {},
+        visible: { transition: { staggerChildren: 0.1 } },
+      }}
       className="min-h-screen pt-14 pb-16"
     >
-      {/* ── Compact sticky tuning rail ── */}
-      <div className="sticky top-14 z-20 border-b border-border bg-background/95 backdrop-blur-sm">
-        <div className="max-w-5xl mx-auto px-6 py-3">
+      {/* ── Floating glassmorphic tuning rail ── */}
+      <div className="sticky top-[4.25rem] z-20 max-w-5xl mx-auto px-6">
+        <motion.div variants={sectionVariants} className="glass rounded-2xl px-6 py-3 mt-2">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3">
             {/* Vibe slider */}
             <div>
@@ -245,61 +287,66 @@ function ResultsPage({
               {sliderFeedback}
             </p>
           )}
-        </div>
+        </motion.div>
       </div>
 
       {/* ── Page content ── */}
       <div className="max-w-5xl mx-auto px-6 py-8">
         {/* Back link */}
-        <button
+        <motion.button
+          variants={sectionVariants}
           onClick={onStartOver}
           className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-7"
         >
           <RotateCcw className="size-3.5" />
           Start over
-        </button>
+        </motion.button>
 
-        {/* Compact page header — no badges here */}
-        <div className="mb-5 pb-5 border-b border-border">
+        {/* Compact page header */}
+        <motion.div variants={sectionVariants} className="mb-5 pb-5 border-b border-border">
           <div className="flex items-center gap-1.5 text-sm text-muted-foreground mb-2">
             <span>{weatherCtx.icon}</span>
             <span>{weatherCtx.label}</span>
           </div>
           <h1 className="capitalize mb-2">{bundleTitle}</h1>
           <p className="text-sm text-muted-foreground italic">{summary}</p>
-        </div>
+        </motion.div>
 
         {/* Inference banner */}
         {inferenceMsg && (
-          <div className="flex items-start gap-2 mb-5 px-4 py-3 rounded-xl bg-muted/60 border border-border">
+          <motion.div variants={sectionVariants} className="flex items-start gap-2 mb-5 px-4 py-3 rounded-xl bg-muted/60 border border-border">
             <span className="text-xs text-muted-foreground mt-0.5 shrink-0">✦</span>
             <p className="text-sm text-muted-foreground italic">{inferenceMsg}</p>
-          </div>
+          </motion.div>
         )}
 
         {/* Collapsible "Why This Works" */}
-        <WhyThisWorksCard summary={whyThisWorks} />
+        <motion.div variants={sectionVariants}>
+          <WhyThisWorksCard summary={whyThisWorks} />
+        </motion.div>
 
         {/* Context chips — directly above product grid */}
-        <div className="flex flex-wrap items-center gap-2 mb-5">
+        <motion.div variants={sectionVariants} className="flex flex-wrap items-center gap-2 mb-5">
           <Badge variant="outline" className="capitalize">{intentData.skillLevel}</Badge>
           <Badge variant="outline" className="capitalize">{intentData.gender}</Badge>
           <Badge variant="outline">Size {intentData.size}</Badge>
           <Badge variant="outline">Under ${intentData.budget}</Badge>
           <Badge variant="outline">{currentBundle.items.length} items</Badge>
-        </div>
+        </motion.div>
 
         {/* Bundle grid */}
-        <BundleRecommendation
-          key={bundleKey}
-          initialBundle={currentBundle}
-          preferredStyle={style}
-          cartAdded={cartAdded}
-          isUpdate={bundleUpdateCount > 0}
-          onAddToCart={onAddToCart}
-          onProceedToCheckout={onProceedToCheckout}
-          onProductClick={handleProductClick}
-        />
+        <motion.div variants={sectionVariants}>
+          <BundleRecommendation
+            key={bundleKey}
+            initialBundle={currentBundle}
+            preferredStyle={style}
+            cartAdded={cartAdded}
+            isUpdate={bundleUpdateCount > 0}
+            onAddToCart={onAddToCart}
+            onProceedToCheckout={onProceedToCheckout}
+            onProductClick={handleProductClick}
+          />
+        </motion.div>
       </div>
 
       {/* PDP Sheet */}
@@ -370,22 +417,53 @@ export default function Shop() {
     setCartSnapshot(null);
   };
 
-  if (view === 'onboarding') {
-    return <IntentBuilder onSubmit={handleComplete} />;
-  }
-
-  if (view === 'building') {
-    return <BuildingScreen intentData={intentData!} />;
-  }
-
   return (
-    <ResultsPage
-      initialBundle={bundle!}
-      intentData={intentData!}
-      cartAdded={cartAdded}
-      onAddToCart={handleAddToCart}
-      onProceedToCheckout={handleProceedToCheckout}
-      onStartOver={handleStartOver}
-    />
+    <AnimatePresence mode="wait">
+      {view === 'onboarding' && (
+        <motion.div
+          key="onboarding"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0, scale: 0.97 }}
+          transition={{ duration: 0.25, ease: 'easeInOut' }}
+        >
+          <IntentBuilder onSubmit={handleComplete} />
+        </motion.div>
+      )}
+      {view === 'building' && (
+        <motion.div
+          key="building"
+          initial={{ opacity: 0, scale: 0.98 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.3, ease: 'easeInOut' }}
+        >
+          <BuildingScreen intentData={intentData!} />
+        </motion.div>
+      )}
+      {view === 'results' && (
+        <motion.div
+          key="results"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0 }}
+          transition={{
+            type: 'spring',
+            stiffness: 300,
+            damping: 30,
+            mass: 0.8,
+          }}
+        >
+          <ResultsPage
+            initialBundle={bundle!}
+            intentData={intentData!}
+            cartAdded={cartAdded}
+            onAddToCart={handleAddToCart}
+            onProceedToCheckout={handleProceedToCheckout}
+            onStartOver={handleStartOver}
+          />
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
