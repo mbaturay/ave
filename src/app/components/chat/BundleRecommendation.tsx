@@ -8,6 +8,8 @@ import { catalog } from '../../../data/catalog';
 import { generateRationale, getReplacement } from '../../../lib/ai';
 import { ProductIcon } from '../shop/ProductIcon';
 import { getProductTier } from '../../../lib/productTier';
+import { getProductImageSrc, parseProductName } from '../../lib/productImage';
+import { ImageWithFallback } from '../figma/ImageWithFallback';
 
 interface Props {
   initialBundle: Bundle;
@@ -109,24 +111,37 @@ export function BundleRecommendation({
     <div className="w-full">
       {/* ── Product grid ── */}
       <div className="grid grid-cols-2 gap-5 lg:grid-cols-3">
-        {bundle.items.map((item) => (
+        {bundle.items.map((item) => {
+          const imageSrc = getProductImageSrc(item.catalogItem);
+          const { displayName } = parseProductName(item.catalogItem.name);
+          return (
           <div
             key={item.catalogItem.id}
             className={`group flex flex-col rounded-2xl border border-border bg-card overflow-hidden transition-opacity duration-300 ${
               replacingId === item.catalogItem.id ? 'opacity-30' : 'opacity-100'
             }`}
           >
-            {/* Product icon */}
+            {/* Product image */}
             <div
-              className="relative aspect-square overflow-hidden bg-muted cursor-pointer flex items-center justify-center"
+              className="relative aspect-square overflow-hidden bg-muted cursor-pointer"
               onClick={() => onProductClick?.(item)}
             >
-              <ProductIcon
-                category={item.catalogItem.category}
-                name={item.catalogItem.name}
-                tier={getProductTier(item.catalogItem)}
-                size={64}
-              />
+              {imageSrc ? (
+                <ImageWithFallback
+                  src={imageSrc}
+                  alt={displayName}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center">
+                  <ProductIcon
+                    category={item.catalogItem.category}
+                    name={item.catalogItem.name}
+                    tier={getProductTier(item.catalogItem)}
+                    size={64}
+                  />
+                </div>
+              )}
               {/* Category tag */}
               <span className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-foreground text-xs px-2 py-1 rounded-md" style={{ fontWeight: 500 }}>
                 {CATEGORY_LABELS[item.catalogItem.category]}
@@ -149,7 +164,7 @@ export function BundleRecommendation({
                   {item.catalogItem.brand}
                 </p>
                 <p className="leading-snug" style={{ fontWeight: 500 }}>
-                  {item.catalogItem.name}
+                  {displayName}
                 </p>
               </div>
 
@@ -192,7 +207,8 @@ export function BundleRecommendation({
               </div>
             </div>
           </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* ── Cart summary ── */}

@@ -9,6 +9,8 @@ import { type CatalogItem } from '../../../data/catalog';
 import { getAlternatives, getPDPExplanation } from '../../../lib/ai';
 import { ProductIcon } from './ProductIcon';
 import { getProductTier } from '../../../lib/productTier';
+import { getProductImageSrc, parseProductName } from '../../lib/productImage';
+import { ImageWithFallback } from '../figma/ImageWithFallback';
 
 const SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 
@@ -75,19 +77,26 @@ function AlternativesView({
       <h3 className="mb-1">Alternatives</h3>
       <p className="text-sm text-muted-foreground mb-6">
         Swapping{' '}
-        <span style={{ fontWeight: 500 }}>{currentItem.name}</span>
+        <span style={{ fontWeight: 500 }}>{parseProductName(currentItem.name).displayName}</span>
         {' '}— choose a replacement below.
       </p>
 
       <div className="flex flex-col gap-3">
-        {alternatives.map((alt) => (
+        {alternatives.map((alt) => {
+          const altImageSrc = getProductImageSrc(alt.item);
+          const { displayName: altDisplayName } = parseProductName(alt.item.name);
+          return (
           <div
             key={alt.item.id}
             className="flex items-center gap-4 p-4 rounded-xl border border-border bg-card hover:border-foreground/30 transition-all group"
           >
-            {/* Icon */}
+            {/* Thumbnail */}
             <div className="size-16 rounded-lg overflow-hidden bg-muted shrink-0 flex items-center justify-center">
-              <ProductIcon category={alt.item.category} name={alt.item.name} tier={getProductTier(alt.item)} size={32} />
+              {altImageSrc ? (
+                <ImageWithFallback src={altImageSrc} alt={altDisplayName} className="w-full h-full object-cover" />
+              ) : (
+                <ProductIcon category={alt.item.category} name={alt.item.name} tier={getProductTier(alt.item)} size={32} />
+              )}
             </div>
 
             {/* Info */}
@@ -97,7 +106,7 @@ function AlternativesView({
                   {alt.tradeoff}
                 </span>
               </div>
-              <p className="text-sm truncate" style={{ fontWeight: 500 }}>{alt.item.name}</p>
+              <p className="text-sm truncate" style={{ fontWeight: 500 }}>{altDisplayName}</p>
               <p className="text-xs text-muted-foreground">{alt.item.brand}</p>
             </div>
 
@@ -113,7 +122,8 @@ function AlternativesView({
               </button>
             </div>
           </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
@@ -137,6 +147,8 @@ export function ProductDetailPanel({ open, bundleItem, bundle, intentData, defau
   if (!bundleItem) return null;
 
   const item = bundleItem.catalogItem;
+  const productImageSrc = getProductImageSrc(item);
+  const { displayName } = parseProductName(item.name);
   const aiExplanation = getPDPExplanation(item, intentData);
   const alternatives = getAlternatives(item, bundle);
 
@@ -162,7 +174,7 @@ export function ProductDetailPanel({ open, bundleItem, bundle, intentData, defau
                 {CATEGORY_LABELS[item.category]}
               </Badge>
             </div>
-            <SheetTitle className="text-left leading-snug">{item.name}</SheetTitle>
+            <SheetTitle className="text-left leading-snug">{displayName}</SheetTitle>
           </SheetHeader>
 
           {showAlternatives ? (
@@ -174,9 +186,13 @@ export function ProductDetailPanel({ open, bundleItem, bundle, intentData, defau
             />
           ) : (
             <>
-              {/* ── Product icon ── */}
+              {/* ── Product image ── */}
               <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-muted mb-5 flex items-center justify-center">
-                <ProductIcon category={item.category} name={item.name} tier={getProductTier(item)} size={112} />
+                {productImageSrc ? (
+                  <ImageWithFallback src={productImageSrc} alt={displayName} className="w-full h-full object-cover" />
+                ) : (
+                  <ProductIcon category={item.category} name={item.name} tier={getProductTier(item)} size={112} />
+                )}
               </div>
 
               {/* ── Brand + rating ── */}
