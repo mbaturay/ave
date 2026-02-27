@@ -153,8 +153,6 @@ function ResultsPage({
   onStartOver: () => void;
 }) {
   const [currentBundle, setCurrentBundle] = useState<Bundle>(initialBundle);
-  const [bundleKey, setBundleKey] = useState(0);
-  // Tracks how many times the bundle has been updated — used to trigger "Updated" badge
   const [bundleUpdateCount, setBundleUpdateCount] = useState(0);
 
   const defaultSlider = skillToSliderDefault(intentData.skillLevel);
@@ -193,7 +191,6 @@ function ResultsPage({
     );
     setCurrentBundle(newBundle);
     setSliderFeedback(message);
-    setBundleKey((k) => k + 1);
     setBundleUpdateCount((c) => c + 1);
   };
 
@@ -220,7 +217,6 @@ function ResultsPage({
     );
     const newBundle = recalculate(newItems);
     setCurrentBundle(newBundle);
-    setBundleKey((k) => k + 1);
     setBundleUpdateCount((c) => c + 1);
     setPdpOpen(false);
   };
@@ -328,7 +324,7 @@ function ResultsPage({
         {/* Context chips — directly above product grid */}
         <motion.div variants={sectionVariants} className="flex flex-wrap items-center gap-2 mb-5">
           <Badge variant="outline" className="capitalize">{intentData.skillLevel}</Badge>
-          <Badge variant="outline" className="capitalize">{intentData.gender}</Badge>
+          {intentData.gender && <Badge variant="outline" className="capitalize">{intentData.gender}</Badge>}
           <Badge variant="outline">Size {intentData.size}</Badge>
           <Badge variant="outline">Under ${intentData.budget}</Badge>
           <Badge variant="outline">{currentBundle.items.length} items</Badge>
@@ -337,7 +333,6 @@ function ResultsPage({
         {/* Bundle grid */}
         <motion.div variants={sectionVariants}>
           <BundleRecommendation
-            key={bundleKey}
             initialBundle={currentBundle}
             preferredStyle={style}
             cartAdded={cartAdded}
