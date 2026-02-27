@@ -56,6 +56,19 @@ export const catalog: CatalogItem[] = [
     tags: ['waterproof', 'down-fill', 'insulation', 'warm', 'premium'],
     style: 'premium',
   },
+  {
+    id: 'j-all',
+    name: 'StormShield All-Weather Jacket',
+    brand: 'Northline',
+    category: 'jacket',
+    price: 159,
+    originalPrice: 189,
+    rating: 4.6,
+    ratingCount: 204,
+    image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600',
+    tags: ['waterproof', 'wind-resistant', 'layering', 'durable'],
+    style: 'all',
+  },
 
   // ── Base Layers ───────────────────────────────────────────────────────────
   {
@@ -96,6 +109,19 @@ export const catalog: CatalogItem[] = [
     image: 'https://images.unsplash.com/photo-1565962684631-716a905dd295?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600',
     tags: ['merino-wool', 'moisture-wicking', 'warm', 'layering', 'premium'],
     style: 'premium',
+  },
+  {
+    id: 'bl-all',
+    name: 'FlexDry Base Layer Set',
+    brand: 'Northline',
+    category: 'base_layer',
+    price: 44,
+    originalPrice: 58,
+    rating: 4.5,
+    ratingCount: 310,
+    image: 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600',
+    tags: ['moisture-wicking', 'stretch', 'layering'],
+    style: 'all',
   },
 
   // ── Pants ─────────────────────────────────────────────────────────────────
@@ -138,6 +164,19 @@ export const catalog: CatalogItem[] = [
     tags: ['waterproof', 'insulation', 'warm', 'lightweight', 'premium'],
     style: 'premium',
   },
+  {
+    id: 'p-all',
+    name: 'RangeLine All-Mountain Pants',
+    brand: 'Northline',
+    category: 'pants',
+    price: 119,
+    originalPrice: 149,
+    rating: 4.6,
+    ratingCount: 166,
+    image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600',
+    tags: ['waterproof', 'durable', 'vented', 'stretch'],
+    style: 'all',
+  },
 
   // ── Gloves ────────────────────────────────────────────────────────────────
   {
@@ -165,6 +204,19 @@ export const catalog: CatalogItem[] = [
     image: 'https://images.unsplash.com/photo-1739395670857-c9ac7e0b39b8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600',
     tags: ['waterproof', 'insulation', 'warm', 'down-fill', 'premium'],
     style: 'premium',
+  },
+  {
+    id: 'g-classic',
+    name: 'Heritage Leather Gloves',
+    brand: 'NordLayer',
+    category: 'gloves',
+    price: 54,
+    originalPrice: 69,
+    rating: 4.6,
+    ratingCount: 211,
+    image: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600',
+    tags: ['leather', 'warm', 'durable', 'classic'],
+    style: 'classic',
   },
 
   // ── Beanies ───────────────────────────────────────────────────────────────
@@ -194,6 +246,19 @@ export const catalog: CatalogItem[] = [
     tags: ['warm', 'stretch', 'layering', 'reflective', 'helmet-compatible'],
     style: 'sporty',
   },
+  {
+    id: 'b-premium',
+    name: 'Summit Cashmere Beanie',
+    brand: 'PeakForm',
+    category: 'beanie',
+    price: 39,
+    originalPrice: 49,
+    rating: 4.8,
+    ratingCount: 142,
+    image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600',
+    tags: ['cashmere', 'warm', 'soft', 'premium'],
+    style: 'premium',
+  },
 
   // ── Goggles ───────────────────────────────────────────────────────────────
   {
@@ -222,6 +287,19 @@ export const catalog: CatalogItem[] = [
     tags: ['UV-protection', 'anti-fog', 'magnetic-lens', 'premium', 'wide-view'],
     style: 'premium',
   },
+  {
+    id: 'og-classic',
+    name: 'SnowLine Classic Goggles',
+    brand: 'NordLayer',
+    category: 'goggles',
+    price: 52,
+    originalPrice: 68,
+    rating: 4.5,
+    ratingCount: 176,
+    image: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600',
+    tags: ['UV-protection', 'anti-fog', 'classic', 'wide-view'],
+    style: 'classic',
+  },
 
   // ── Boots ─────────────────────────────────────────────────────────────────
   {
@@ -237,6 +315,32 @@ export const catalog: CatalogItem[] = [
     tags: ['waterproof', 'insulation', 'warm', 'grip', 'durable'],
     style: 'classic',
   },
+  {
+    id: 'bt-sporty',
+    name: 'TrailRush Snow Boots',
+    brand: 'AlpineRun',
+    category: 'boots',
+    price: 129,
+    originalPrice: 159,
+    rating: 4.5,
+    ratingCount: 227,
+    image: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600',
+    tags: ['waterproof', 'lightweight', 'warm', 'grip'],
+    style: 'sporty',
+  },
+  {
+    id: 'bt-premium',
+    name: 'Summit Ridge Pro Boots',
+    brand: 'PeakForm',
+    category: 'boots',
+    price: 189,
+    originalPrice: 229,
+    rating: 4.8,
+    ratingCount: 98,
+    image: 'https://images.unsplash.com/photo-1642690167184-eb64f4ef469f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600',
+    tags: ['waterproof', 'insulation', 'premium', 'grip', 'durable'],
+    style: 'premium',
+  },
 
   // ── Socks ─────────────────────────────────────────────────────────────────
   {
@@ -251,5 +355,18 @@ export const catalog: CatalogItem[] = [
     image: 'https://images.unsplash.com/photo-1642853474532-9aca78f70629?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600',
     tags: ['merino-wool', 'warm', 'cushioned', 'moisture-wicking'],
     style: 'all',
+  },
+  {
+    id: 'sk-premium',
+    name: 'PeakForm Thermal Pro Socks',
+    brand: 'PeakForm',
+    category: 'socks',
+    price: 26,
+    originalPrice: 32,
+    rating: 4.8,
+    ratingCount: 265,
+    image: 'https://images.unsplash.com/photo-1642853474532-9aca78f70629?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600',
+    tags: ['merino-wool', 'warm', 'compression', 'premium'],
+    style: 'premium',
   },
 ];

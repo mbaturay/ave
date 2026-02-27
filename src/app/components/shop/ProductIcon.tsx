@@ -10,7 +10,7 @@ import {
   ShoppingBag,
   type Icon as PhosphorIcon,
 } from '@phosphor-icons/react';
-import type { ProductTier } from '../../../lib/productTier';
+import { getTierColorClass, type ProductTier } from '../../../lib/productTier';
 
 const CATEGORY_ICONS: Record<string, PhosphorIcon> = {
   jacket: Hoodie,
@@ -27,11 +27,6 @@ const CATEGORY_ICONS: Record<string, PhosphorIcon> = {
   accessory: ShoppingBag,
 };
 
-const TIER_ICON_COLOR: Record<ProductTier, string> = {
-  value: 'text-slate-500',
-  standard: 'text-sky-600',
-  premium: 'text-amber-600',
-};
 
 function resolveIcon(category?: string, name?: string): PhosphorIcon {
   if (category) {
@@ -65,7 +60,7 @@ export function ProductIcon({
   size = 64,
 }: ProductIconProps) {
   const Icon = resolveIcon(category, name);
-  const colorClass = tier ? TIER_ICON_COLOR[tier] : 'text-muted-foreground';
+  const colorClass = tier ? getTierColorClass(tier) : 'text-muted-foreground';
 
   return (
     <Icon
