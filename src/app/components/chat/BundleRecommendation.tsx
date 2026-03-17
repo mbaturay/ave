@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Star, RefreshCw, X, ShoppingBag, Check, ArrowRight, Tag } from 'lucide-react';
 import { Button } from '../ui/button';
@@ -78,16 +78,26 @@ export function BundleRecommendation({
 }: Props) {
   const [bundle, setBundle] = useState<Bundle>(initialBundle);
   const [replacingId, setReplacingId] = useState<string | null>(null);
-  // Show "Updated" micro-badge briefly when a slider triggers a new bundle
   const [showUpdateBadge, setShowUpdateBadge] = useState(false);
 
+  // Sync bundle when parent passes a new one (slider / PDP replace)
   useEffect(() => {
+    setBundle(initialBundle);
+  }, [initialBundle]);
+
+  // Flash "Updated" micro-badge when bundle changes after initial render
+  const isFirstRender = useRef(true);
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
     if (isUpdate) {
       setShowUpdateBadge(true);
       const t = setTimeout(() => setShowUpdateBadge(false), 900);
       return () => clearTimeout(t);
     }
-  }, []); // intentionally runs only on mount — component remounts on each key change
+  }, [initialBundle]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const currentIds = bundle.items.map((i) => i.catalogItem.id);
 

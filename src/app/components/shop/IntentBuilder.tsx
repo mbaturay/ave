@@ -7,7 +7,7 @@ import { getInferenceMessage, type IntentData } from '../../../lib/ai';
 const ACTIVITIES = ['skiing', 'snowboarding', 'hiking', 'mountain biking', 'snowshoeing', 'winter running', 'backcountry skiing'];
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const SKILL_LEVELS: IntentData['skillLevel'][] = ['Beginner', 'Intermediate', 'Advanced'];
-const GENDER_OPTIONS = ['Women', 'Men', 'Unisex', 'Prefer not to say'];
+const GENDER_OPTIONS = ['Women', 'Men'];
 const SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 const BUDGET_OPTIONS = [200, 300, 500, 700, 1000];
 
@@ -98,7 +98,7 @@ export function IntentBuilder({ onSubmit }: Props) {
     return null;
   }, [activity, location, month, skillLevel]);
 
-  const isComplete = !!(activity && location && month && skillLevel && gender && size);
+  const isComplete = !!(activity && location && month && skillLevel && size);
 
   const handleSubmit = () => {
     if (!isComplete) return;

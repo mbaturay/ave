@@ -6,7 +6,7 @@ export interface IntentData {
   location: string;
   month: string;
   skillLevel: 'Beginner' | 'Intermediate' | 'Advanced';
-  gender: string;
+  gender?: string;
   size: string;
   budget: number;
 }

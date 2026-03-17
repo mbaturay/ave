@@ -1,5 +1,5 @@
 node_modules
-dist
+dist/
 .DS_Store
 .claude
 *.log
@@ -15,3 +15,6 @@ coverage
 .idea
 .vscode
 *.swp
+*.mov
+*.mp4
+*.zip
